@@ -40,6 +40,18 @@ const UpdatePost = () => {
     navigate("/");
   };
 
+  const handlePostDelete = () => {
+    const asyncDeletePost = async () => {
+      try {
+        await apis.deletePost(id || "");
+      } catch (err) {
+        console.log("Error deleting post");
+      }
+    };
+    asyncDeletePost();
+    navigate("/");
+  };
+
   const handleFormDataUpdate = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -109,7 +121,12 @@ const UpdatePost = () => {
           >
             Update
           </button>
-          <button type="button" className="btn btn-danger" id="btn-delete">
+          <button
+            type="button"
+            className="btn btn-danger"
+            id="btn-delete"
+            onClick={handlePostDelete}
+          >
             Delete
           </button>
         </div>

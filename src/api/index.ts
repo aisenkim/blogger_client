@@ -14,6 +14,7 @@ export const getPosts = () => api.get(`/posts`);
 export const getPostById = (id: string) => api.get(`/posts/${id}`);
 export const updatePost = (payload: GetPost) =>
   api.put(`/posts/${payload.id}`, payload);
+export const deletePost = (id: string) => api.delete(`/posts/${id}`);
 // export const createTop5List = (payload) => api.post(`/top5list/`, payload);
 // export const getAllTop5Lists = () => api.get(`/top5lists/`);
 // export const getTop5ListPairs = (toolMenu, sortMenu) =>
@@ -35,6 +36,7 @@ const apis = {
   getPosts,
   getPostById,
   updatePost,
+  deletePost,
   // createTop5List,
   // getAllTop5Lists,
   // getTop5ListPairs,

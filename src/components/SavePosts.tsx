@@ -16,12 +16,15 @@ const SavePosts = (): JSX.Element => {
       author: author,
       content: content,
     };
-    try {
-      apis.createPost(payload);
-    } catch (err) {
-      console.log("Error saving the post");
-    }
+    const asyncHandleSubmit = async () => {
+      try {
+        await apis.createPost(payload);
+      } catch (err) {
+        console.log("Error saving the post");
+      }
+    };
 
+    asyncHandleSubmit();
     navigate("/");
   };
 
