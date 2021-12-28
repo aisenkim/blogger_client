@@ -1,20 +1,53 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { GetPost } from "../interface/GetPost";
-import { GetPosts } from "../interface/GetPosts";
+import { Login } from "../interface/Login";
 import { PostPayload } from "../interface/PostPayload";
-import { UpdatePost } from "../interface/UpdatePost";
 
-// axios.defaults.withCredentials = true;
+// GETTING TOKEN FROM LOCAL STORAGE
+// FIND A MORE SECURE WAY
+const storageToken =
+  localStorage.getItem("accessToken") == null
+    ? ""
+    : localStorage.getItem("accessToken")!;
+
+axios.defaults.headers.common["Authorization"] = storageToken;
+axios.defaults.withCredentials = true;
+
 const api = axios.create({
-  baseURL: "http://localhost:8080/api/v1",
+  baseURL: "http://localhost:8080",
 });
 
-export const createPost = (payload: PostPayload) => api.post(`/posts`, payload);
-export const getPosts = () => api.get(`/posts`);
-export const getPostById = (id: string) => api.get(`/posts/${id}`);
+const getHeader = () => {
+  const token = localStorage.getItem("accessToken");
+  if (token === null) return;
+  return { headers: { Authorization: token } };
+};
+
+export const createPost = (payload: PostPayload) =>
+  api.post(`/api/v1/posts`, payload);
+export const getPosts = () => {
+  const header = getHeader();
+  return api.get(`api/v1/posts`, header);
+};
+export const getPostById = (id: string) => api.get(`/api/v1/posts/${id}`);
 export const updatePost = (payload: GetPost) =>
-  api.put(`/posts/${payload.id}`, payload);
-export const deletePost = (id: string) => api.delete(`/posts/${id}`);
+  api.put(`/api/v1/posts/${payload.id}`, payload);
+export const deletePost = (id: string) => api.delete(`/api/v1/posts/${id}`);
+
+export const getLoggedIn = () => {
+  const header = getHeader();
+  return api.get(`/api/v1/user`, header);
+};
+// export const login = (payload: Login) =>
+//   api.post(`/login`, { username: "admin", password: "admin" });
+export const login = (payload: Login) => api.post(`/login`, payload);
+// .then((response) => {
+//   const accessToken = response.headers.authorization;
+//   localStorage.setItem("accessToken", accessToken);
+// })
+// .catch((err) => {
+//   console.log("Error logging in: ", err);
+// });
 // export const createTop5List = (payload) => api.post(`/top5list/`, payload);
 // export const getAllTop5Lists = () => api.get(`/top5lists/`);
 // export const getTop5ListPairs = (toolMenu, sortMenu) =>
@@ -37,18 +70,8 @@ const apis = {
   getPostById,
   updatePost,
   deletePost,
-  // createTop5List,
-  // getAllTop5Lists,
-  // getTop5ListPairs,
-  // updateTop5ListById,
-  // deleteTop5ListById,
-  // getTop5ListById,
-  // getTop5ListByTitle,
-
-  // getLoggedIn,
-  // registerUser,
-  // loginUser,
-  // logoutUser,
+  getLoggedIn,
+  login,
 };
 
 export default apis;

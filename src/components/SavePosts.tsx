@@ -19,13 +19,13 @@ const SavePosts = (): JSX.Element => {
     const asyncHandleSubmit = async () => {
       try {
         await apis.createPost(payload);
+        navigate("/");
       } catch (err) {
         console.log("Error saving the post");
       }
     };
 
     asyncHandleSubmit();
-    navigate("/");
   };
 
   return (
